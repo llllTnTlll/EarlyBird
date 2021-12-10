@@ -1,3 +1,5 @@
+import os
+
 import win32con
 import win32gui
 import win32ui
@@ -38,7 +40,7 @@ def screen_shot():
     signedIntsArray = screenshot.GetBitmapBits(True)
     img = numpy.frombuffer(signedIntsArray, dtype='uint8')
     img.shape = (height, width, 4)
-    cv.cvtColor(img, cv.COLOR_BGRA2RGB)
+    img = cv.cvtColor(img, cv.COLOR_BGRA2BGR)
 
     # 内存释放
     mem_dc.DeleteDC()
@@ -48,16 +50,38 @@ def screen_shot():
 
 
 def match_temp(screen, temp_name):
-    directory = "./resources/template_img"
-    result = cv.matchTemplate(screen, img, method=cv.TM_CCOEFF)
+    # 模板匹配结果
+    tl = 0
+    br = 0
+    flag = False
+    # 读取模板
+    directory = r".\resources\template"
+    full_temp_name = os.path.join(directory, temp_name)
+    temp = cv.imread(full_temp_name)
+    # 取得模板高宽
+    th, tw = temp.shape[:2]
+    # 进行模板匹配返回最可能目标
+    result = cv.matchTemplate(screen, temp, method=cv.TM_CCOEFF)
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
+    if max_val > 10**8:
+        tl = max_loc
+        br = (tl[0] + tw, tl[1] + th)
+        flag = True
+        return flag, tl, br
+    else:
+        return flag, tl, br
 
 
 def main():
     screen = screen_shot()
-    cv.imshow("im_opencv", cv.resize(screen, (0, 0), fx=0.5, fy=0.5))
-    cv.waitKey(0)
-    cv.destroyAllWindows()
+    flag, tl, br = match_temp(screen, "user_rules.jpg")
+    if flag:
+        cv.rectangle(screen, tl, br, (0, 0, 255), 2)
+        cv.imshow("im_opencv", cv.resize(screen, (0, 0), fx=0.5, fy=0.5))
+        cv.waitKey(0)
+        cv.destroyAllWindows()
+    else:
+        print("None Match")
 
 
 if __name__ == '__main__':
