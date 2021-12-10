@@ -1,11 +1,12 @@
 import os
-
+from ctypes import *
 import win32con
 import win32gui
 import win32ui
 import win32api
 import numpy
 import cv2 as cv
+import time
 
 
 def screen_shot():
@@ -17,7 +18,7 @@ def screen_shot():
     pixel_scale = 2
     # 获取桌面
     hdesktop = win32gui.GetDesktopWindow()
-    # 分辨率适应
+    # 获取监视器分辨率
     width = win32api.GetSystemMetrics(win32con.SM_CXVIRTUALSCREEN) * pixel_scale
     height = win32api.GetSystemMetrics(win32con.SM_CYVIRTUALSCREEN) * pixel_scale
     # 创建设备描述表
@@ -49,7 +50,31 @@ def screen_shot():
     return img
 
 
+def coordinate_trans(tl, br):
+    # 转换为标准中心坐标
+    x = int((tl[0] + (br[0] - tl[0]) / 2) / 2)
+    y = int((tl[1] + (br[1] - tl[1]) / 2) / 2)
+    return x, y
+
+
+def mouse_move(x, y):
+    windll.user32.SetCursorPos(x, y)
+
+
+def mouse_click(x, y):
+    mouse_move(x, y)
+    time.sleep(0.05)
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+
+
 def match_temp(screen, temp_name):
+    """
+    对指定内容进行模板匹配
+    :param screen:
+    :param temp_name:
+    :return: topleft, bottomright
+    """
     # 模板匹配结果
     tl = 0
     br = 0
@@ -77,9 +102,9 @@ def main():
     flag, tl, br = match_temp(screen, "user_rules.jpg")
     if flag:
         cv.rectangle(screen, tl, br, (0, 0, 255), 2)
-        cv.imshow("im_opencv", cv.resize(screen, (0, 0), fx=0.5, fy=0.5))
-        cv.waitKey(0)
-        cv.destroyAllWindows()
+        x, y = coordinate_trans(tl, br)
+        mouse_click(x, y)
+
     else:
         print("None Match")
 
