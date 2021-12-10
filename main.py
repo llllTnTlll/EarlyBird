@@ -51,6 +51,12 @@ def screen_shot():
 
 
 def coordinate_trans(tl, br):
+    """
+    标准坐标系转换
+    :param tl:
+    :param br:
+    :return:
+    """
     # 转换为标准中心坐标
     x = int((tl[0] + (br[0] - tl[0]) / 2) / 2)
     y = int((tl[1] + (br[1] - tl[1]) / 2) / 2)
@@ -58,10 +64,22 @@ def coordinate_trans(tl, br):
 
 
 def mouse_move(x, y):
+    """
+    鼠标移动
+    :param x:
+    :param y:
+    :return:
+    """
     windll.user32.SetCursorPos(x, y)
 
 
 def mouse_click(x, y):
+    """
+    鼠标单击
+    :param x:
+    :param y:
+    :return:
+    """
     mouse_move(x, y)
     time.sleep(0.05)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
@@ -88,7 +106,7 @@ def match_temp(screen, temp_name):
     # 进行模板匹配返回最可能目标
     result = cv.matchTemplate(screen, temp, method=cv.TM_CCOEFF)
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
-    if max_val > 10**8:
+    if max_val > 5*10**7:
         tl = max_loc
         br = (tl[0] + tw, tl[1] + th)
         flag = True
@@ -97,16 +115,31 @@ def match_temp(screen, temp_name):
         return flag, tl, br
 
 
-def main():
-    screen = screen_shot()
-    flag, tl, br = match_temp(screen, "user_rules.jpg")
-    if flag:
-        cv.rectangle(screen, tl, br, (0, 0, 255), 2)
-        x, y = coordinate_trans(tl, br)
-        mouse_click(x, y)
+def click_into(temp_name):
+    flag = False
+    while not flag:
+        time.sleep(0.1)
+        screen = screen_shot()
+        flag, tl, br = match_temp(screen, temp_name)
+        if tl == 0 or br == 0:
+            continue
+        # cv.rectangle(screen, tl, br, (0, 0, 255), 2)
+        # cv.imshow("", cv.resize(screen, (0, 0), fx=0.3, fy=0.3))
+        # cv.waitKey(2000)
+        # cv.destroyAllWindows()
+        if flag:
+            x, y = coordinate_trans(tl, br)
+            mouse_click(x, y)
+        else:
+            print("None Match")
 
-    else:
-        print("None Match")
+
+def main():
+    click_into("wechat_icon.jpg")
+    click_into("library_icon.jpg")
+    click_into("other_service.jpg")
+    click_into("seats_order.jpg")
+    click_into("user_rules.jpg")
 
 
 if __name__ == '__main__':
