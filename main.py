@@ -8,7 +8,7 @@ def main():
     win32_helper.mouse_click(100, 100)
     wait_for_seconds(1)
     win32_helper.mouse_click(100, 100)
-    confirm("confirm0.jpg")(click_into)("step1.jpg")
+    retry(5)(confirm("confirm0.jpg")(click_into))("step1.jpg")
     confirm("confirm1.jpg")(click_into)("step2.jpg")
     confirm("confirm2.jpg")(click_into)("step3.jpg")
     confirm("confirm3.jpg")(click_into)("step4.jpg")

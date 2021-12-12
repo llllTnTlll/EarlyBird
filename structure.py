@@ -36,5 +36,18 @@ def confirm(temp_name):
     return confirm_decorator
 
 
+def retry(times: int):
+    def retry_decorator(func):
+        def func_block(*args, **kwargs):
+            result = False
+            for i in range(times):
+                result = func(*args, **kwargs)
+                if result:
+                    break
+                else:
+                    print("try again")
+            return result
+        return func_block
+    return retry_decorator
 
 
