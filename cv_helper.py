@@ -62,10 +62,9 @@ def click_into(temp_name):
     flag, tl, br = match_temp(screen, temp_name, confirm_mode=False)
     if tl == 0 or br == 0:
         return False
-    # cv.rectangle(screen, tl, br, (0, 0, 255), 2)
-    # cv.imshow("", cv.resize(screen, (0, 0), fx=0.3, fy=0.3))
-    # cv.waitKey(2000)
-    # cv.destroyAllWindows()
+    cv.rectangle(screen, tl, br, (0, 0, 255), 2)
+    save_path = "./history/screen_history/"
+    cv.imwrite(save_path+temp_name, screen)
     if flag:
         x, y = coordinate_trans(tl, br)
         win32_helper.mouse_click(x, y)

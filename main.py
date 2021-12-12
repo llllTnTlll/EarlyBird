@@ -8,14 +8,19 @@ def main():
     win32_helper.mouse_click(100, 100)
     wait_for_seconds(1)
     win32_helper.mouse_click(100, 100)
-    retry(5)(confirm("confirm0.jpg")(click_into))("step1.jpg")
-    confirm("confirm1.jpg")(click_into)("step2.jpg")
-    confirm("confirm2.jpg")(click_into)("step3.jpg")
-    confirm("confirm3.jpg")(click_into)("step4.jpg")
-    wait_for_seconds(1)
-    confirm("confirm4.jpg")(click_into)("step5.jpg")
-    wait_for_seconds(1)
-    confirm("confirm4.jpg")(click_into)("step6.jpg")
+    for i in range(5):
+        retry(5)(confirm("confirm0.jpg")(click_into))("step1.jpg")
+        confirm("confirm1.jpg")(click_into)("step2.jpg")
+        confirm("confirm2.jpg")(click_into)("step3.jpg")
+        confirm("confirm3.jpg")(click_into)("step4.jpg")
+        wait_for_seconds(1)
+        key1 = confirm("confirm4.jpg")(click_into)("step5.jpg")
+        wait_for_seconds(1)
+        key2 = confirm("confirm4.jpg")(click_into)("step6.jpg")
+        wait_for_seconds(3)
+        click_into("step7.jpg")
+        if key1 is True or key2 is True:
+            break
 
 
 if __name__ == '__main__':
