@@ -7,6 +7,16 @@ def wait_for_seconds(second):
     time.sleep(second)
 
 
+def on_time(datetime: str):
+    is_time = False
+    while not is_time:
+        time.sleep(1)
+        time_now = time.strftime("%Y%m%d%H%M", time.localtime())
+        if datetime == time_now:
+            print("it's time!!!")
+            is_time = True
+
+
 def confirm(temp_name):
     def confirm_decorator(func):
         def func_block(*args, **kwargs):
