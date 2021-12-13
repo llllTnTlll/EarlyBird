@@ -5,8 +5,8 @@ from structure import *
 def seats_occupying():
     # 脚本参数设定
     IS_ON_TIME = True            # 是否在指定时间运行脚本
-    START_TIME = 163600          # 脚本预执行时间
-    RUN_TIME = 182600            # 脚本实际运行时间
+    START_TIME = "055900"          # 脚本预执行时间
+    RUN_TIME = "060000"            # 脚本实际运行时间
     ROUNDS = 10                  # 脚本最大抢选重复执行轮数
     STEP_RETRY = 5               # 关键步骤重试次数
 

@@ -11,7 +11,7 @@ def wait_for_seconds(second):
     time.sleep(second)
 
 
-def on_time(datetime: int):
+def on_time(datetime: str):
     """
     定时器
     达到指定时间后释放阻塞
@@ -22,7 +22,7 @@ def on_time(datetime: int):
     while not is_time:
         time.sleep(1)
         time_now = int(time.strftime("%H%M%S", time.localtime()))
-        if time_now >= datetime:
+        if int(time_now) >= int(datetime):
             print("it's time!!!")
             is_time = True
 
@@ -86,7 +86,7 @@ def keep_on(datetime):
     keep = True
     while keep:
         time_now = int(time.strftime("%H%M%S", time.localtime()))
-        if time_now >= datetime:
+        if time_now >= int(datetime):
             break
         win32_helper.mouse_click(0, 0)
         time.sleep(1)
