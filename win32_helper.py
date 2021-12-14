@@ -18,6 +18,11 @@ def mouse_move(x, y):
     windll.user32.SetCursorPos(x, y)
 
 
+def mouse_position():
+    p = win32api.GetCursorPos()
+    return p
+
+
 def mouse_click(x, y):
     """
     鼠标单击
@@ -31,10 +36,10 @@ def mouse_click(x, y):
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
 
 
-def adj_window(hWnd, position, size):
+def adj_window(hwnd, position, size):
     """
     根据窗口句柄调整窗体层叠方式、位置、大小
-    :param hWnd:
+    :param hwnd:
     :param position:
     :param size:
     :return:
@@ -44,7 +49,7 @@ def adj_window(hWnd, position, size):
     # HWND_TOP: 将窗口置于Z序的顶部。
     # HWND_TOPMOST: 将窗口置于所有非顶层窗口之上。即使窗口未被激活窗口也将保持顶级位置。
 
-    win32gui.SetWindowPos(hWnd, win32con.HWND_TOPMOST,
+    win32gui.SetWindowPos(hwnd, win32con.HWND_TOPMOST,
                           position[0], position[1], size[0], size[1],
                           win32con.SWP_SHOWWINDOW)
 

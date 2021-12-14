@@ -1,5 +1,8 @@
 import time
 from functools import wraps
+from win32com import client
+import win32con
+import win32gui
 
 import cv_helper
 import win32_helper
@@ -19,7 +22,7 @@ def on_time(datetime: int):
     is_time = False
     while not is_time:
         time.sleep(1)
-        time_now = int(time.strftime("%Y%m%d%H%M", time.localtime()))
+        time_now = int(time.strftime("%H%M%S", time.localtime()))
         if time_now >= datetime:
             print("it's time!!!")
             is_time = True
@@ -72,8 +75,25 @@ def retry(times: int):
 
 
 def unlock_screen():
-    win32_helper.mouse_click(100, 100)
+    win32_helper.mouse_click(0, 0)
     wait_for_seconds(1)
-    win32_helper.mouse_click(100, 100)
+    win32_helper.mouse_click(0, 0)
 
+
+def keep_on(datetime):
+    # 获得当前活动窗口句柄
+    hwnd = win32gui.GetForegroundWindow()
+    # 阻塞
+    keep = True
+    while keep:
+        time_now = int(time.strftime("%H%M%S", time.localtime()))
+        if time_now >= datetime:
+            break
+        win32_helper.mouse_click(0, 0)
+        time.sleep(1)
+    # 将指定窗口调至顶层
+    shell = client.Dispatch("WScript.Shell")
+    shell.SendKeys('%')
+    win32gui.SetForegroundWindow(hwnd)
+    win32gui.ShowWindow(hwnd, win32con.SW_SHOW)
 

@@ -59,7 +59,7 @@ def click_into(temp_name):
     :param temp_name:
     :return:
     """
-    # wait_for_seconds(0.2)
+    wait_for_seconds(0.2)
     screen = win32_helper.screen_shot()
     flag, tl, br = match_temp(screen, temp_name, confirm_mode=False)
     # 若未检测到模板匹配结果
