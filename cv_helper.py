@@ -10,9 +10,11 @@ def coordinate_trans(tl, br):
     :param br:
     :return:
     """
+    # 分辨率缩放系数
+    pixel_scale = 2
     # 转换为标准中心坐标
-    x = int((tl[0] + (br[0] - tl[0]) / 2) / 2)
-    y = int((tl[1] + (br[1] - tl[1]) / 2) / 2)
+    x = int((tl[0] + (br[0] - tl[0]) / 2) / pixel_scale)
+    y = int((tl[1] + (br[1] - tl[1]) / 2) / pixel_scale)
     return x, y
 
 
@@ -42,7 +44,7 @@ def match_temp(screen, temp_name, confirm_mode):
     result = cv.matchTemplate(screen, temp, method=cv.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
     # 若成功找到匹配结果
-    if max_val > 0.9:
+    if max_val > 0.8:
         tl = max_loc
         br = (tl[0] + tw, tl[1] + th)
         flag = True
@@ -57,21 +59,21 @@ def click_into(temp_name):
     :param temp_name:
     :return:
     """
-    wait_for_seconds(0.2)
+    # wait_for_seconds(0.2)
     screen = win32_helper.screen_shot()
     flag, tl, br = match_temp(screen, temp_name, confirm_mode=False)
-    if tl == 0 or br == 0:
+    # 若未检测到模板匹配结果
+    # break
+    if not flag:
+        print("\033[31m{} click failed\033[0m".format(str(temp_name)))
         return False
+    # 若检测到模板匹配结果
     cv.rectangle(screen, tl, br, (0, 0, 255), 2)
     save_path = "./history/screen_history/"
     cv.imwrite(save_path+temp_name, screen)
-    if flag:
-        x, y = coordinate_trans(tl, br)
-        win32_helper.mouse_click(x, y)
-        print("clicked")
-        return True
-    else:
-        print("fault")
-        return False
+    x, y = coordinate_trans(tl, br)
+    win32_helper.mouse_click(x, y)
+    print("\033[32m{} clicked\033[0m".format(str(temp_name)))
+    return True
 
 
