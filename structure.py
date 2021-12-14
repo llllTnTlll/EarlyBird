@@ -3,7 +3,6 @@ from functools import wraps
 from win32com import client
 import win32con
 import win32gui
-
 import cv_helper
 import win32_helper
 
