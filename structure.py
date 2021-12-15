@@ -1,8 +1,10 @@
 import time
 from functools import wraps
-from win32com import client
+
 import win32con
 import win32gui
+from win32com import client
+
 import cv_helper
 import win32_helper
 
@@ -21,7 +23,10 @@ def on_time(datetime: str):
     is_time = False
     while not is_time:
         time.sleep(1)
-        time_now = int(time.strftime("%H%M%S", time.localtime()))
+        time_now = int(time.strftime("%m%d%H%M%S", time.localtime()))
+        # 每10min发出存活信号
+        if time_now % 1000 == 0:
+            print("program still alive")
         if int(time_now) >= int(datetime):
             print("it's time!!!")
             is_time = True
@@ -37,15 +42,16 @@ def confirm(temp_name):
     def confirm_decorator(func):
         def func_confirm(*args, **kwargs):
             # 确认目标是否存在
+            time.sleep(0.1)
             screen = win32_helper.screen_shot()
             flag, _, _ = cv_helper.match_temp(screen, temp_name, confirm_mode=True)
             if flag:
-                print("\033[32m{} Confirmation success\033[0m".format(str(temp_name)))
+                print("{} confirmation success".format(str(temp_name)))
                 # 执行原函数
                 result = func(*args, **kwargs)
                 return result
             else:
-                print("\033[31m{} Confirmation failed\033[0m".format(str(temp_name)))
+                print("\033[31m{} confirmation failed\033[0m".format(str(temp_name)))
         return func_confirm
     return confirm_decorator
 
@@ -85,7 +91,7 @@ def keep_on(datetime):
     # 阻塞
     keep = True
     while keep:
-        time_now = int(time.strftime("%H%M%S", time.localtime()))
+        time_now = int(time.strftime("%m%d%H%M%S", time.localtime()))
         if time_now >= int(datetime):
             break
         win32_helper.mouse_click(0, 0)

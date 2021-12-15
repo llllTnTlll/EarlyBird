@@ -1,0 +1,44 @@
+2021-12-15 11:13:36 it's time!!!
+------step1------
+2021-12-15 11:13:37 confirm0.jpg confirmation success
+2021-12-15 11:13:38 step1.jpg clicked
+------step2------
+2021-12-15 11:13:40 confirm1.jpg confirmation success
+2021-12-15 11:13:42 step2.jpg clicked
+------step3------
+2021-12-15 11:13:43 confirm2.jpg confirmation success
+2021-12-15 11:13:44 step3.jpg clicked
+------step4------
+2021-12-15 11:13:46 confirm3.jpg confirmation success
+2021-12-15 11:13:47 step4.jpg clicked
+2021-12-15 11:13:49 confirm4.jpg confirmation success
+2021-12-15 11:13:51 refresh.jpg clicked
+2021-12-15 11:13:51 READY FOR OCCUPYING...
+2021-12-15 11:13:52 refresh.jpg clicked
+================round 1/10================
+------first order------
+2021-12-15 11:13:54 confirm4.jpg confirmation failed
+2021-12-15 11:13:54 func_confirm try again
+------second order------
+2021-12-15 11:13:55 confirm4.jpg confirmation success
+2021-12-15 11:13:57 4303.jpg click failed
+2021-12-15 11:13:57 func_confirm try again
+2021-12-15 11:13:59 refresh.jpg clicked
+================round 2/10================
+------first order------
+2021-12-15 11:14:00 confirm4.jpg confirmation success
+2021-12-15 11:14:02 4289.jpg click failed
+2021-12-15 11:14:02 func_confirm try again
+------second order------
+2021-12-15 11:14:04 confirm4.jpg confirmation success
+2021-12-15 11:14:05 4303.jpg click failed
+2021-12-15 11:14:05 func_confirm try again
+2021-12-15 11:14:07 refresh.jpg clicked
+================round 3/10================
+------first order------
+2021-12-15 11:14:08 confirm4.jpg confirmation failed
+2021-12-15 11:14:08 func_confirm try again
+------second order------
+2021-12-15 11:14:10 confirm4.jpg confirmation success
+2021-12-15 11:14:12 4303.jpg click failed
+2021-12-15 11:14:12 func_confirm try again

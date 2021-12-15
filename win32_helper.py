@@ -1,11 +1,12 @@
+import time
 from ctypes import *
+
+import cv2 as cv
+import numpy
+import win32api
 import win32con
 import win32gui
 import win32ui
-import win32api
-import numpy
-import time
-import cv2 as cv
 
 
 def mouse_move(x, y):
