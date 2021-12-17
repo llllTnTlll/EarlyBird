@@ -1,35 +1,8 @@
 import time
 from functools import wraps
 
-import win32con
-import win32gui
-from win32com import client
-
 import cv_helper
 import win32_helper
-
-
-def wait_for_seconds(second):
-    time.sleep(second)
-
-
-def on_time(datetime: str):
-    """
-    定时器
-    达到指定时间后释放阻塞
-    :param datetime:
-    :return:
-    """
-    is_time = False
-    while not is_time:
-        time.sleep(1)
-        time_now = int(time.strftime("%m%d%H%M%S", time.localtime()))
-        # 每10min发出存活信号
-        if time_now % 1000 == 0:
-            print("program still alive")
-        if int(time_now) >= int(datetime):
-            print("it's time!!!")
-            is_time = True
 
 
 def confirm(temp_name):
@@ -42,7 +15,7 @@ def confirm(temp_name):
     def confirm_decorator(func):
         def func_confirm(*args, **kwargs):
             # 确认目标是否存在
-            time.sleep(0.1)
+            time.sleep(0.15)
             screen = win32_helper.screen_shot()
             flag, _, _ = cv_helper.match_temp(screen, temp_name, confirm_mode=True)
             if flag:
@@ -78,27 +51,4 @@ def retry(times: int):
         return func_retry
     return retry_decorator
 
-
-def unlock_screen():
-    win32_helper.mouse_click(0, 0)
-    wait_for_seconds(1)
-    win32_helper.mouse_click(0, 0)
-
-
-def keep_on(datetime):
-    # 获得当前活动窗口句柄
-    hwnd = win32gui.GetForegroundWindow()
-    # 阻塞
-    keep = True
-    while keep:
-        time_now = int(time.strftime("%m%d%H%M%S", time.localtime()))
-        if time_now >= int(datetime):
-            break
-        win32_helper.mouse_click(0, 0)
-        time.sleep(1)
-    # 将指定窗口调至顶层
-    shell = client.Dispatch("WScript.Shell")
-    shell.SendKeys('%')
-    win32gui.SetForegroundWindow(hwnd)
-    win32gui.ShowWindow(hwnd, win32con.SW_SHOW)
 

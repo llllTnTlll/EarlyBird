@@ -1,27 +1,44 @@
-2021-12-15 16:02:39 it's time!!!
+2021-12-17 09:27:41 it's time!!!
 ------step1------
-2021-12-15 16:02:41 confirm0.jpg confirmation success
-2021-12-15 16:02:41 step1.jpg clicked
+2021-12-17 09:27:43 confirm0.jpg confirmation success
+2021-12-17 09:27:44 step1.jpg clicked
 ------step2------
-2021-12-15 16:02:42 confirm1.jpg confirmation failed
-2021-12-15 16:02:42 func_confirm try again
-2021-12-15 16:02:43 confirm1.jpg confirmation failed
-2021-12-15 16:02:43 func_confirm try again
-2021-12-15 16:02:44 confirm1.jpg confirmation failed
-2021-12-15 16:02:44 func_confirm try again
-2021-12-15 16:02:45 confirm1.jpg confirmation failed
-2021-12-15 16:02:45 func_confirm try again
-2021-12-15 16:02:46 confirm1.jpg confirmation failed
-2021-12-15 16:02:46 func_confirm try again
+2021-12-17 09:27:46 confirm1.jpg confirmation success
+2021-12-17 09:27:47 step2.jpg clicked
 ------step3------
-2021-12-15 16:02:46 confirm2.jpg confirmation failed
-2021-12-15 16:02:46 func_confirm try again
-2021-12-15 16:02:47 confirm2.jpg confirmation failed
-2021-12-15 16:02:47 func_confirm try again
-2021-12-15 16:02:47 confirm2.jpg confirmation failed
-2021-12-15 16:02:47 func_confirm try again
-2021-12-15 16:02:48 confirm2.jpg confirmation failed
-2021-12-15 16:02:48 func_confirm try again
-2021-12-15 16:02:49 confirm2.jpg confirmation failed
-2021-12-15 16:02:49 func_confirm try again
+2021-12-17 09:27:49 confirm2.jpg confirmation success
+2021-12-17 09:27:50 step3.jpg clicked
 ------step4------
+2021-12-17 09:27:52 confirm3.jpg confirmation success
+2021-12-17 09:27:53 step4.jpg clicked
+2021-12-17 09:27:55 confirm4.jpg confirmation success
+2021-12-17 09:27:56 refresh.jpg clicked
+2021-12-17 09:27:56 READY FOR OCCUPYING...
+2021-12-17 09:27:58 refresh.jpg clicked
+================round 1/10================
+------first order------
+2021-12-17 09:27:59 confirm4.jpg confirmation success
+2021-12-17 09:28:01 4289.jpg click failed
+2021-12-17 09:28:01 func_confirm try again
+------second order------
+2021-12-17 09:28:02 confirm4.jpg confirmation success
+2021-12-17 09:28:04 4303.jpg click failed
+2021-12-17 09:28:04 func_confirm try again
+2021-12-17 09:28:06 refresh.jpg clicked
+================round 2/10================
+------first order------
+2021-12-17 09:28:07 confirm4.jpg confirmation success
+2021-12-17 09:28:09 4289.jpg click failed
+2021-12-17 09:28:09 func_confirm try again
+------second order------
+2021-12-17 09:28:10 confirm4.jpg confirmation success
+2021-12-17 09:28:12 4303.jpg click failed
+2021-12-17 09:28:12 func_confirm try again
+2021-12-17 09:28:14 refresh.jpg clicked
+================round 3/10================
+------first order------
+2021-12-17 09:28:15 confirm4.jpg confirmation success
+2021-12-17 09:28:17 4289.jpg click failed
+2021-12-17 09:28:17 func_confirm try again
+------second order------
+2021-12-17 09:28:18 confirm4.jpg confirmation success

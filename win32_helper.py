@@ -7,6 +7,7 @@ import win32api
 import win32con
 import win32gui
 import win32ui
+from win32com import client
 
 
 def mouse_move(x, y):
@@ -20,6 +21,10 @@ def mouse_move(x, y):
 
 
 def mouse_position():
+    """
+    获取鼠标位置
+    :return:
+    """
     p = win32api.GetCursorPos()
     return p
 
@@ -35,6 +40,36 @@ def mouse_click(x, y):
     time.sleep(0.05)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+
+
+def mouse_wheel(distance):
+    """
+    鼠标滚轮滚动
+    :param distance:
+    :return:
+    """
+    win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, 0, 0, distance)
+
+
+def get_foreground_hwnd():
+    """
+    获取当前窗口句柄
+    :return:
+    """
+    hwnd = win32gui.GetForegroundWindow()
+    return hwnd
+
+
+def focus_on(hwnd):
+    """
+    将指定窗口调至栈顶
+    :param hwnd:
+    :return:
+    """
+    shell = client.Dispatch("WScript.Shell")
+    shell.SendKeys('%')
+    win32gui.SetForegroundWindow(hwnd)
+    win32gui.ShowWindow(hwnd, win32con.SW_SHOW)
 
 
 def adj_window(hwnd, position, size):

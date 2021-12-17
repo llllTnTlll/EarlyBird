@@ -1,14 +1,13 @@
-from cv_helper import *
-from structure import *
-
 import logit
+from functions import *
+from structure import *
 
 
 def seats_occupying():
     # 脚本参数设定
     IS_ON_TIME = True                      # 是否在指定时间运行脚本
-    START_TIME = "12/14/12:29:00"          # 脚本预执行时间
-    RUN_TIME = "12/14/12:30:00"            # 脚本实际运行时间
+    START_TIME = "12/17/05:29:00"          # 脚本预执行时间
+    RUN_TIME = "12/17/05:30:00"            # 脚本实际运行时间
     PRE_ROUNDS = 5
     OCC_ROUNDS = 10                        # 脚本最大抢选重复执行轮数
     STEP_RETRY = 5                         # 关键步骤重试次数
@@ -50,6 +49,7 @@ def seats_occupying():
         keep_on(datetime=run_time)
 
     for i in range(OCC_ROUNDS):
+        win32_helper.mouse_move(0, 0)
         click_into("refresh.jpg")
         print("================round {}/{}================".format(i+1, OCC_ROUNDS))
 
@@ -60,8 +60,20 @@ def seats_occupying():
         key2 = retry(1)(confirm("confirm4.jpg")(click_into))("4303.jpg")
 
 
+def auto_occupying():
+    time.sleep(5)
+    for i in range(5):
+        win32_helper.mouse_wheel(-1)
+        time.sleep(0.1)
+    seats = win32_helper.screen_shot()[310:1260, 135:650]
+    cv.imwrite("resources/seats_template/floor4_temp.jpg", seats)
+    cv.imshow("", seats)
+    cv.waitKey()
+
+
 def main():
     seats_occupying()
+    # auto_occupying()
 
 
 if __name__ == '__main__':

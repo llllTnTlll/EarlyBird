@@ -1,8 +1,7 @@
 import os
 
 import cv2 as cv
-
-from structure import *
+import numpy as np
 
 
 def coordinate_trans(tl, br):
@@ -46,7 +45,7 @@ def match_temp(screen, temp_name, confirm_mode):
     result = cv.matchTemplate(screen, temp, method=cv.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
     # 若成功找到匹配结果
-    if max_val > 0.8:
+    if max_val > 0.95:
         tl = max_loc
         br = (tl[0] + tw, tl[1] + th)
         flag = True
@@ -55,26 +54,55 @@ def match_temp(screen, temp_name, confirm_mode):
         return flag, tl, br
 
 
-def click_into(temp_name):
+def match_keypoints(kpsA, kpsB, featuresA, featuresB, ratio=0.75, reprojThresh=4.0):
     """
-    单击模板匹配结果
-    :param temp_name:
+    匹配特征点
+    返回
+    :param kpsA: 特征点集A
+    :param kpsB: 特征点集B
+    :param featuresA: 特征集A
+    :param featuresB: 特征集B
+    :param ratio: 距离比阈值
+    :param reprojThresh: 最大允许重投影错误阈值
+    :return:匹配点集，仿射变换矩阵，仿射矩阵状态
+    """
+    # 建立暴力匹配器
+    matcher = cv.BFMatcher()
+    # 使用KNN检测来自A、B图的SIFT特征匹配对，K=2
+    raw_matches = matcher.knnMatch(featuresA, featuresB, 2)
+
+    matches = []
+    for m in raw_matches:
+        # 当最近距离跟次近距离的比值小于ratio值时，保留此匹配对
+        if len(m) == 2 and m[0].distance < m[1].distance * ratio:
+            # 存储两个点在featuresA, featuresB中的索引值
+            matches.append((m[0].trainIdx, m[0].queryIdx))
+
+    # 当筛选后的匹配对大于4时，计算视角变换矩阵
+    if len(matches) > 4:
+        # 获取匹配对的点坐标
+        ptsA = np.float32([kpsA[i] for (_, i) in matches])
+        ptsB = np.float32([kpsB[i] for (i, _) in matches])
+        # 计算视角变换矩阵
+        (H, status) = cv.findHomography(ptsA, ptsB, cv.RANSAC, reprojThresh)
+        # 返回结果
+        return matches, H, status
+    # 如果匹配对小于4时，返回None
+    return None
+
+
+def sift_detection(image):
+    """
+    输入图像返回特征点集和特征向量
+    :param image:
     :return:
     """
-    screen = win32_helper.screen_shot()
-    flag, tl, br = match_temp(screen, temp_name, confirm_mode=False)
-    # 若未检测到模板匹配结果
-    # break
-    if not flag:
-        print("\033[31m{} click failed\033[0m".format(str(temp_name)))
-        return False
-    # 若检测到模板匹配结果
-    cv.rectangle(screen, tl, br, (0, 0, 255), 2)
-    save_path = "./history/screen_history/"
-    cv.imwrite(save_path+temp_name, screen)
-    x, y = coordinate_trans(tl, br)
-    win32_helper.mouse_click(x, y)
-    print("{} clicked".format(str(temp_name)))
-    return True
-
+    gray = cv.cvtColor(image, cv.COLOR_RGB2GRAY)
+    # 检测SIFT特征点，并计算描述子
+    descriptor = cv.SIFT_create()
+    (kps, features) = descriptor.detectAndCompute(gray, None)
+    # 将结果转换成NumPy数组
+    kps = np.float32([kp.pt for kp in kps])
+    # 返回特征点集，及对应的描述特征
+    return kps, features
 
