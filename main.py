@@ -5,12 +5,12 @@ from structure import *
 
 def seats_occupying():
     # 脚本参数设定
-    IS_ON_TIME = True                      # 是否在指定时间运行脚本
-    START_TIME = "12/17/05:29:00"          # 脚本预执行时间
-    RUN_TIME = "12/17/05:30:00"            # 脚本实际运行时间
+    IS_ON_TIME = True  # 是否在指定时间运行脚本
+    START_TIME = "12/19/22:36:30"  # 脚本预执行时间
+    RUN_TIME = "12/19/05:30:00"  # 脚本实际运行时间
     PRE_ROUNDS = 5
-    OCC_ROUNDS = 10                        # 脚本最大抢选重复执行轮数
-    STEP_RETRY = 5                         # 关键步骤重试次数
+    OCC_ROUNDS = 10  # 脚本最大抢选重复执行轮数
+    STEP_RETRY = 5  # 关键步骤重试次数
 
     # 初始化时间字符串
     start_time = START_TIME.replace("/", "").replace(":", "")
@@ -51,13 +51,13 @@ def seats_occupying():
     for i in range(OCC_ROUNDS):
         win32_helper.mouse_move(0, 0)
         click_into("refresh.jpg")
-        print("================round {}/{}================".format(i+1, OCC_ROUNDS))
+        print("================round {}/{}================".format(i + 1, OCC_ROUNDS))
 
         print("------first order------")
-        key1 = retry(1)(confirm("confirm4.jpg")(click_into))("4289.jpg")
+        key1 = retry(1)(confirm("confirm4.jpg")(click_into))("left.jpg")
 
         print("------second order------")
-        key2 = retry(1)(confirm("confirm4.jpg")(click_into))("4303.jpg")
+        key2 = retry(1)(confirm("confirm4.jpg")(click_into))("right.jpg")
 
 
 def auto_occupying():
@@ -73,6 +73,10 @@ def auto_occupying():
 
 def main():
     seats_occupying()
+    # temp = cv.imread(r"C:\Users\lzy99\Pictures\t.jpg")
+    # image = cv.imread(r"C:\Users\lzy99\Pictures\t3.jpg")
+    # template_overlap(temp, image)
+
     # auto_occupying()
 
 

@@ -51,6 +51,11 @@ def mouse_wheel(distance):
     win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, 0, 0, distance)
 
 
+def key_board_input(key_code):
+    win32api.keybd_event(key_code, 0, 0, 0)  # enter
+    win32api.keybd_event(key_code, 0, win32con.KEYEVENTF_KEYUP, 0)  # 释放按键
+
+
 def get_foreground_hwnd():
     """
     获取当前窗口句柄
@@ -58,6 +63,20 @@ def get_foreground_hwnd():
     """
     hwnd = win32gui.GetForegroundWindow()
     return hwnd
+
+
+def get_window_rect(hwnd):
+    """
+    获取窗体位置和大小
+    :param hwnd:
+    :return:
+    """
+    rect = win32gui.GetWindowRect(hwnd)
+    x = rect[0]
+    y = rect[1]
+    w = rect[2] - x
+    h = rect[3] - y
+    return x, y, w, h
 
 
 def focus_on(hwnd):

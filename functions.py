@@ -69,7 +69,7 @@ def on_time(datetime: str):
 
 
 def unlock_screen():
-    mouse_click(0, 0)
-    wait_for_seconds(1)
-    mouse_click(0, 0)
+    key_board_input(13)
+    wait_for_seconds(2)
+    key_board_input(13)
 

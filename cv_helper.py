@@ -106,3 +106,45 @@ def sift_detection(image):
     # 返回特征点集，及对应的描述特征
     return kps, features
 
+
+def temp_fill(layer, temp):
+    left_border = 0
+    top_border = 0
+    bottom_border = 0
+    right_border = 0
+    # 检测image左侧黑边
+    for i in range(int(layer.shape[1]/2)):
+        if layer[int(layer.shape[0]/2)][i][1] == 0:
+            left_border = i
+    # 检测image顶端黑边
+    for i in range(int(layer.shape[0]/2)):
+        if layer[i][int(layer.shape[1]/2)][1] == 0:
+            top_border = i
+
+
+def template_overlap(temp, image):
+    kps1, features1 = sift_detection(image)
+    kps2, features2 = sift_detection(temp)
+    _, homography, _ = match_keypoints(kps1, kps2, features1, features2)
+    if homography is not None:
+        # 仿射变换
+        layer = cv.warpPerspective(image, homography, (temp.shape[1], temp.shape[0]))
+        # 灰度转化
+        layer_gray = cv.cvtColor(layer, cv.COLOR_RGB2GRAY)
+        temp_gray = cv.cvtColor(temp, cv.COLOR_RGB2GRAY)
+        # 二值化
+        ret, layer_binary = cv.threshold(layer_gray, 150, 255, cv.THRESH_BINARY)
+        ret, temp_binary = cv.threshold(temp_gray, 150, 255, cv.THRESH_BINARY)
+
+        kernel = np.ones((3, 3), np.uint8)
+        layer_binary = cv.erode(layer_binary, kernel)
+        temp_binary = cv.erode(temp_binary, kernel)
+        result = cv.subtract(temp_binary, layer_binary)
+        cv.namedWindow("layer")
+        cv.namedWindow("temp")
+        cv.imshow("layer", layer_binary)
+        cv.imshow("temp", temp_binary)
+        cv.imshow("result", result)
+        cv.waitKey()
+
+
